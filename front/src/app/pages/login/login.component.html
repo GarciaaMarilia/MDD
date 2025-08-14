@@ -1,0 +1,41 @@
+<div>
+    <header>
+        <div>MDD</div>
+    </header>
+
+    <div class="center">
+        <button mat-icon-button (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+
+        <h1>Inscription</h1>
+
+        <form class="w-standart" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <mat-label>Adresse e-mail</mat-label>
+            <mat-form-field appearance="outline">
+                <input matInput type="email" formControlName="email" placeholder="exemple@email.com" />
+                <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+                    L'adresse e-mail est requise
+                </mat-error>
+                <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
+                    Veuillez entrer une adresse e-mail valide
+                </mat-error>
+            </mat-form-field>
+
+            <mat-label>Mot de passe</mat-label>
+            <mat-form-field appearance="outline">
+                <input matInput type="password" formControlName="password" placeholder="Entrez votre mot de passe" />
+                <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+                    Le mot de passe est requis
+                </mat-error>
+                <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
+                    Le mot de passe doit avoir au moins 6 caractères
+                </mat-error>
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
+                S'inscrire
+            </button>
+        </form>
+    </div>
+</div>
