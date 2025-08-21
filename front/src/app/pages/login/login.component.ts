@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/AuthService/auth.service';
 
 @Component({
@@ -14,6 +15,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private location: Location,
+    private router: Router,
     private authService: AuthService
   ) {
     this.loginForm = this.fb.group({
@@ -29,6 +31,7 @@ export class LoginComponent implements OnInit {
         next: (res) => {
           console.log('Login OK', res);
           localStorage.setItem('token', res.token);
+          this.navigateToInitialPage();
         },
         error: (err) => console.error('Login error', err),
       });
@@ -36,6 +39,10 @@ export class LoginComponent implements OnInit {
       console.log('Formulário inválido');
       this.markFormGroupTouched();
     }
+  }
+
+  navigateToInitialPage(): void {
+    this.router.navigate(['/initial-page']);
   }
 
   private markFormGroupTouched() {

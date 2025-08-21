@@ -1,0 +1,41 @@
+
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.iml
+
+############################
+# Angular (front)
+############################
+/front/node_modules/
+/front/dist/
+/front/.angular/
+/front/.angular/cache/
+/front/src/environments/   
+
+
+/front/coverage/
+
+############################
+# Spring Boot (back)
+############################
+/back/target/              # Maven output
+/back/build/               # Se usar Gradle
+
+
+/back/.env
+/back/*.properties
+/back/*.yml
+/back/*.yaml
+
+# Cache
+.cache/

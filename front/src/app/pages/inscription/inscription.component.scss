@@ -1,12 +1,16 @@
 .center {
   height: 100vh;
   display: flex;
-  justify-content: center;
+  margin-top: 16rem;
   align-items: center;
   flex-direction: column;
 }
 
+.back {
+  display: flex;
+}
+
 form {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }

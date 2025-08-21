@@ -1,52 +1,47 @@
-<div>
-    <header>
-        <div>MDD</div>
-    </header>
-
-    <div class="center">
+<div class="center">
+    <div class="back">
         <button mat-icon-button (click)="goBack()">
             <mat-icon>arrow_back</mat-icon>
         </button>
-
         <h1>Inscription</h1>
-
-        <form class="w-standart" [formGroup]="inscriptionForm" (ngSubmit)="onSubmit()">
-            <mat-label>Nom d'utilisateur</mat-label>
-            <mat-form-field appearance="outline">
-                <input matInput formControlName="nomUtilisateur" placeholder="Entrez votre nom d'utilisateur" />
-                <mat-error *ngIf="inscriptionForm.get('nomUtilisateur')?.hasError('required')">
-                    Le nom d'utilisateur est requis
-                </mat-error>
-                <mat-error *ngIf="inscriptionForm.get('nomUtilisateur')?.hasError('minlength')">
-                    Le nom d'utilisateur doit avoir au moins 3 caractères
-                </mat-error>
-            </mat-form-field>
-
-            <mat-label>Adresse e-mail</mat-label>
-            <mat-form-field appearance="outline">
-                <input matInput type="email" formControlName="adresseEmail" placeholder="exemple@email.com" />
-                <mat-error *ngIf="inscriptionForm.get('adresseEmail')?.hasError('required')">
-                    L'adresse e-mail est requise
-                </mat-error>
-                <mat-error *ngIf="inscriptionForm.get('adresseEmail')?.hasError('email')">
-                    Veuillez entrer une adresse e-mail valide
-                </mat-error>
-            </mat-form-field>
-
-            <mat-label>Mot de passe</mat-label>
-            <mat-form-field appearance="outline">
-                <input matInput type="password" formControlName="motDePasse" placeholder="Entrez votre mot de passe" />
-                <mat-error *ngIf="inscriptionForm.get('motDePasse')?.hasError('required')">
-                    Le mot de passe est requis
-                </mat-error>
-                <mat-error *ngIf="inscriptionForm.get('motDePasse')?.hasError('minlength')">
-                    Le mot de passe doit avoir au moins 6 caractères
-                </mat-error>
-            </mat-form-field>
-
-            <button mat-raised-button color="primary" type="submit" [disabled]="inscriptionForm.invalid">
-                S'inscrire
-            </button>
-        </form>
     </div>
+
+    <form class="w-standart" [formGroup]="inscriptionForm" (ngSubmit)="onSubmit()">
+        <mat-label>Nom d'utilisateur</mat-label>
+        <mat-form-field appearance="outline">
+            <input matInput formControlName="username" placeholder="Entrez votre nom d'utilisateur" />
+            <mat-error *ngIf="inscriptionForm.get('username')?.hasError('required')">
+                Le nom d'utilisateur est requis
+            </mat-error>
+            <mat-error *ngIf="inscriptionForm.get('username')?.hasError('minlength')">
+                Le nom d'utilisateur doit avoir au moins 3 caractères
+            </mat-error>
+        </mat-form-field>
+
+        <mat-label>Adresse e-mail</mat-label>
+        <mat-form-field appearance="outline">
+            <input matInput type="email" formControlName="email" placeholder="exemple@email.com" />
+            <mat-error *ngIf="inscriptionForm.get('email')?.hasError('required')">
+                L'adresse e-mail est requise
+            </mat-error>
+            <mat-error *ngIf="inscriptionForm.get('email')?.hasError('email')">
+                Veuillez entrer une adresse e-mail valide
+            </mat-error>
+        </mat-form-field>
+
+        <mat-label>Mot de passe</mat-label>
+        <mat-form-field appearance="outline">
+            <input matInput type="password" formControlName="password" placeholder="Entrez votre mot de passe" />
+            <mat-error *ngIf="inscriptionForm.get('password')?.hasError('required')">
+                Le mot de passe est requis
+            </mat-error>
+            <mat-error *ngIf="inscriptionForm.get('password')?.hasError('minlength')">
+                Le mot de passe doit avoir au moins 6 caractères
+            </mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="inscriptionForm.invalid">
+            S'inscrire
+        </button>
+    </form>
 </div>
