@@ -4,13 +4,16 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
-
+import org.springframework.beans.factory.annotation.Value;
 import java.util.Date;
 
 @Component
 public class JwtUtils {
-    private final String jwtSecret = "minhaChaveSecretaSuperSegura";
-    private final int jwtExpirationMs = 86400000;
+    @Value("${jwt.secret}")
+    private String jwtSecret;
+
+    @Value("${jwt.expirationMs}")
+    private int jwtExpirationMs;
 
     public String generateJwtToken(String username) {
         return Jwts.builder()
