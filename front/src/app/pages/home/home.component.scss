@@ -5,3 +5,31 @@
   align-items: center;
   flex-direction: column;
 }
+
+.button-group {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.btn-bordered {
+  border: 1px solid #000000;
+  background-color: white;
+  color: #000000;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+@media (max-width: 768px) {
+  .center img {
+    width: 225px;
+    height: 130px;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+}

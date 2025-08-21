@@ -1,0 +1,16 @@
+.center {
+  height: 100vh;
+  display: flex;
+  margin-top: 16rem;
+  align-items: center;
+  flex-direction: column;
+}
+
+.back {
+  display: flex;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
