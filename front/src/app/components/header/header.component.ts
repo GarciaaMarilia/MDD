@@ -45,11 +45,11 @@ export class HeaderComponent implements OnInit {
   }
 
   navigateToArticles() {
-    this.router.navigate(['/articles']);
+    this.router.navigate(['/initial-page']);
   }
 
-  navigateToThemes() {
-    this.router.navigate(['/themes']);
+  navigateToTopics() {
+    this.router.navigate(['/topics']);
   }
 
   navigateToProfile() {

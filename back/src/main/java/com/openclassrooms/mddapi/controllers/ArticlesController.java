@@ -1,39 +1,34 @@
 package com.openclassrooms.mddapi.controllers;
 
 import com.openclassrooms.mddapi.models.Article;
+import com.openclassrooms.mddapi.services.ArticlesService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.openclassrooms.mddapi.repositories.ArticlesRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/articles")
+@RequiredArgsConstructor
 public class ArticlesController {
 
-    private final ArticlesRepository articlesRepository;
-
-    public ArticlesController(ArticlesRepository articleRepository) {
-        this.articlesRepository = articleRepository;
-    }
+    private final ArticlesService articlesService;
 
     @PostMapping
-    public Article createArticle(@RequestBody Article article) {
-        article.setCreatedAt(LocalDateTime.now());
-        return articlesRepository.save(article);
+    public ResponseEntity<Article> createArticle(@RequestBody Article article) {
+        return ResponseEntity.ok(articlesService.createArticle(article));
     }
 
     @GetMapping
-    public List<Article> getAllArticles() {
-        return articlesRepository.findAll();
+    public ResponseEntity<List<Article>> getAllArticles() {
+        return ResponseEntity.ok(articlesService.getAllArticles());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Article> getArticleById(@PathVariable Long id) {
-        Optional<Article> article = articlesRepository.findById(id);
-        return article.map(ResponseEntity::ok)
+        return articlesService.getArticleById(id)
+                .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

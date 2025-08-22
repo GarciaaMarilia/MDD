@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'src/app/models/Subscription';
 
 import { User } from 'src/app/models/User';
+import { Topic } from 'src/app/models/Topic';
 import { AuthService } from 'src/app/services/AuthService/auth.service';
 
 @Component({
@@ -15,7 +15,7 @@ export class ProfileComponent implements OnInit {
 
   profileForm!: FormGroup;
 
-  subscriptions: Subscription[] = [
+  subscriptions: Topic[] = [
     {
       id: 1,
       title: 'Titre du thème',

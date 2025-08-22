@@ -5,6 +5,8 @@ import { User } from 'src/app/models/User';
 import { ArticleRequest } from 'src/app/models/Article';
 import { AuthService } from 'src/app/services/AuthService/auth.service';
 import { ArticlesService } from 'src/app/services/Articles/articles.service';
+import { TopicsService } from 'src/app/services/Topics/topics.service';
+import { Topic } from 'src/app/models/Topic';
 
 @Component({
   selector: 'app-create-article',
@@ -16,21 +18,13 @@ export class CreateArticleComponent implements OnInit {
 
   articleForm: FormGroup;
 
-  themes = [
-    'Technologie',
-    'Science',
-    'Santé',
-    'Sport',
-    'Culture',
-    'Économie',
-    'Politique',
-    'Environnement',
-  ];
+  topics: Topic[] = [];
 
   constructor(
     private fb: FormBuilder,
-    private articlesService: ArticlesService,
-    private authService: AuthService
+    private authService: AuthService,
+    private topicsService: TopicsService,
+    private articlesService: ArticlesService
   ) {
     this.articleForm = this.fb.group({
       topic: ['', Validators.required],
@@ -44,6 +38,19 @@ export class CreateArticleComponent implements OnInit {
       if (userInfo) {
         this.user = userInfo;
       }
+    });
+
+    this.getAllTopics();
+  }
+
+  getAllTopics() {
+    this.topicsService.getAll().subscribe({
+      next: (response) => {
+        this.topics = [...response];
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération des topics:', err);
+      },
     });
   }
 
