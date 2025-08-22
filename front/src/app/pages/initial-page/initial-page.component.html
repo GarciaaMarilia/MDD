@@ -5,35 +5,18 @@
         </button>
 
         <div class="sort-container">
-            <label for="sortSelect">Trier par</label>
-            <select id="sortSelect" class="sort-select" [(ngModel)]="sortBy" (change)="onSortChange()">
-                <option value="date">Date</option>
-                <option value="title">Titre</option>
-            </select>
+            <label>Trier par date</label>
+            <button class="sort-button" (click)="toggleSortOrder()">
+                <span *ngIf="sortAsc">&#9650;</span>
+                <span *ngIf="!sortAsc">&#9660;</span>
+            </button>
         </div>
+
     </div>
 
     <div class="articles-grid">
-        <article class="article-card" *ngFor="let article of articles; trackBy: trackByArticleId"
-            (click)="onArticleClick(article)">
-
-            <h3 class="article-title">{{ article.title }}</h3>
-
-            <div class="article-meta">
-                <div class="meta-item">
-                    <span class="meta-label">Date</span>
-                    <span class="meta-value">{{ formatDate(article.date) }}</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">Auteur</span>
-                    <span class="meta-value">{{ article.author }}</span>
-                </div>
-            </div>
-
-            <div class="article-content">
-                <p>{{ article.content }}</p>
-            </div>
-        </article>
+        <app-card *ngFor="let article of articles" [content]="article" [hasButton]="true"
+            (cardClicked)="onArticleClick(article.id)"></app-card>
     </div>
 
     <div class="empty-state" *ngIf="articles.length === 0">

@@ -1,0 +1,37 @@
+<div class="user-profile-container">
+    <!-- Section Profil utilisateur -->
+    <div *ngIf="profileForm" class="profile-section">
+        <h2 class="section-title">Profil utilisateur</h2>
+
+        <form [formGroup]="profileForm" (ngSubmit)="onSaveProfile()" class="profile-form">
+            <div class="form-group">
+                <input type="text" formControlName="username" class="form-control" placeholder="Username">
+            </div>
+
+            <div class="form-group">
+                <input type="email" formControlName="email" class="form-control" placeholder="email@email.fr">
+            </div>
+
+            <div class="form-group">
+                <input type="password" formControlName="password" class="form-control" placeholder="Mot de passe">
+            </div>
+
+            <button type="submit" class="save-button">
+                Sauvegarder
+            </button>
+        </form>
+    </div>
+
+    <!-- Séparateur -->
+    <hr class="section-divider">
+
+    <!-- Section Abonnements -->
+    <div class="subscriptions-section">
+        <h2 class="section-title">Abonnements</h2>
+
+        <div class="subscriptions-grid">
+            <app-card *ngFor="let subscription of subscriptions" [content]="subscription" [hasButton]="true"
+                (cardClicked)="onUnsubscribe(subscription.id)"></app-card>
+        </div>
+    </div>
+</div>

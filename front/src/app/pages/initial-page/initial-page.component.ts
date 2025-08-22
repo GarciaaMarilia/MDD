@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { Article } from 'src/app/models/Article';
+import { Component, OnInit } from '@angular/core';
+import { ArticlesService } from 'src/app/services/Articles/articles.service';
 
 @Component({
   selector: 'app-initial-page',
@@ -9,60 +11,49 @@ import { Article } from 'src/app/models/Article';
 })
 export class InitialPageComponent implements OnInit {
   articles: Article[] = [];
-  sortBy: string = 'date'; // 'date' ou 'title'
 
-  // Dados mock para demonstração
-  mockArticles: Article[] = [
-    {
-      id: 1,
-      title: "Titre de l'article",
-      date: '2024-08-21',
-      author: 'Auteur',
-      content:
-        "Content: lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled...",
-    },
-    {
-      id: 2,
-      title: "Titre de l'article",
-      date: '2024-08-20',
-      author: 'Auteur',
-      content:
-        "Content: lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled...",
-    },
-    {
-      id: 3,
-      title: "Titre de l'article",
-      date: '2024-08-19',
-      author: 'Auteur',
-      content:
-        "Content: lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled...",
-    },
-    {
-      id: 4,
-      title: "Titre de l'article",
-      date: '2024-08-18',
-      author: 'Auteur',
-      content:
-        "Content: lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled...",
-    },
-  ];
-
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private articlesService: ArticlesService
+  ) {}
 
   ngOnInit(): void {
     this.loadArticles();
   }
 
   loadArticles(): void {
-    // Aqui você faria a chamada para sua API
-    // this.articleService.getArticles().subscribe(articles => {
-    //   this.articles = articles;
-    //   this.sortArticles();
-    // });
+    this.articlesService.getAll().subscribe({
+      next: (response) => {
+        this.articles = [...response];
+      },
+      error: (err) => {
+        console.error("Erreur lors de la création de l'article:", err);
+        alert("Erreur lors de la création de l'article.");
+      },
+    });
 
-    // Por enquanto, usando dados mock
-    this.articles = [...this.mockArticles];
     this.sortArticles();
+  }
+
+  sortAsc: boolean = true;
+
+  toggleSortOrder(): void {
+    this.sortAsc = !this.sortAsc;
+    this.sortArticles();
+  }
+
+  sortArticles(): void {
+    if (this.sortAsc) {
+      this.articles.sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
+    } else {
+      this.articles.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+    }
   }
 
   onCreateArticle(): void {
@@ -73,19 +64,8 @@ export class InitialPageComponent implements OnInit {
     this.sortArticles();
   }
 
-  private sortArticles(): void {
-    this.articles.sort((a, b) => {
-      if (this.sortBy === 'date') {
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
-      } else if (this.sortBy === 'title') {
-        return a.title.localeCompare(b.title);
-      }
-      return 0;
-    });
-  }
-
-  onArticleClick(article: Article): void {
-    this.router.navigate(['/article', article.id]);
+  onArticleClick(id: number): void {
+    this.router.navigate(['/article', id]);
   }
 
   formatDate(dateString: string): string {

@@ -52,7 +52,7 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/themes']);
   }
 
-  onProfileClick() {
+  navigateToProfile() {
     this.router.navigate(['/profile']);
   }
 
