@@ -21,6 +21,7 @@ import { ProfileComponent } from './pages/profile/profile/profile.component';
 import { InscriptionComponent } from './pages/inscription/inscription.component';
 import { InitialPageComponent } from './pages/initial-page/initial-page.component';
 import { CreateArticleComponent } from './pages/create-article/create-article/create-article.component';
+import { TopicsComponent } from './pages/topics/topics.component';
 
 export function appInitializerFactory(appInitService: AppInitService) {
   return () => appInitService.init();
@@ -36,6 +37,7 @@ export function appInitializerFactory(appInitService: AppInitService) {
     CreateArticleComponent,
     ProfileComponent,
     CardComponent,
+    TopicsComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+
+import { Topic } from 'src/app/models/Topic';
 import { Article } from 'src/app/models/Article';
-import { Subscription } from 'src/app/models/Subscription';
 
 @Component({
   selector: 'app-card',
@@ -8,10 +9,10 @@ import { Subscription } from 'src/app/models/Subscription';
   styleUrls: ['./card.component.scss'],
 })
 export class CardComponent implements OnInit {
-  @Input() content!: Article | Subscription;
+  @Input() content!: Article | Topic;
   @Input() hasButton: boolean = false;
-  @Output() cardClicked = new EventEmitter<Article | Subscription>();
-  @Output() buttonClicked = new EventEmitter<Article | Subscription>(); // evento para o botão
+  @Output() cardClicked = new EventEmitter<Article | Topic>();
+  @Output() buttonClicked = new EventEmitter<Article | Topic>();
 
   constructor() {}
 
@@ -22,7 +23,7 @@ export class CardComponent implements OnInit {
   }
 
   onButtonClick(event: Event): void {
-    event.stopPropagation(); // evita que o clique do botão dispare onCardClick
+    event.stopPropagation();
     this.buttonClicked.emit(this.content);
   }
 

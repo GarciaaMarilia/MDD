@@ -10,13 +10,12 @@
     </div>
 
     <form [formGroup]="articleForm" (ngSubmit)="onSubmit()" class="article-form">
-        <!-- Sélection du topic -->
         <div class="form-group">
             <select formControlName="topic" class="form-control theme-select"
                 [class.error]="topic?.invalid && topic?.touched">
                 <option value="" disabled>Sélectionner un thème</option>
-                <option *ngFor="let themeOption of themes" [value]="themeOption">
-                    {{ themeOption }}
+                <option *ngFor="let topic of topics" [value]="topic">
+                    {{ topic.title }}
                 </option>
             </select>
             <div *ngIf="topic?.invalid && topic?.touched" class="error-message">
@@ -24,7 +23,6 @@
             </div>
         </div>
 
-        <!-- Titre de l'article -->
         <div class="form-group">
             <input type="text" formControlName="title" class="form-control title-input" placeholder="Titre de l'article"
                 [class.error]="title?.invalid && title?.touched">
@@ -34,7 +32,6 @@
             </div>
         </div>
 
-        <!-- Contenu de l'article -->
         <div class="form-group">
             <textarea formControlName="content" class="form-control content-textarea" placeholder="Contenu de l'article"
                 rows="8" [class.error]="content?.invalid && content?.touched">
