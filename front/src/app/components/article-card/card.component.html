@@ -1,0 +1,22 @@
+<div class="card" (click)="onCardClick()">
+    <h3 class="title">{{ content.title }}</h3>
+
+    <div *ngIf="isArticle(content) && content.createdAt && content.user" class="content-meta">
+        <div class="meta-item">
+            <span class="meta-label">Date</span>
+            <span class="meta-value">{{ formatDate(content.createdAt) }}</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Auteur</span>
+            <span class="meta-value">{{ content.user?.username }}</span>
+        </div>
+    </div>
+
+    <div class="content">
+        <p>{{ content.content || content.content }}</p>
+    </div>
+
+    <button *ngIf="hasButton" (click)="onButtonClick($event)">
+        Se désabonner
+    </button>
+</div>

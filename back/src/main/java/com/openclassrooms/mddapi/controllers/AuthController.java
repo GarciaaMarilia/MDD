@@ -4,7 +4,9 @@ import com.openclassrooms.mddapi.models.User;
 import com.openclassrooms.mddapi.payload.request.LoginRequest;
 import com.openclassrooms.mddapi.payload.request.RegisterRequest;
 import com.openclassrooms.mddapi.payload.response.JwtResponse;
+import com.openclassrooms.mddapi.payload.response.LoginResponse;
 import com.openclassrooms.mddapi.payload.response.MessageResponse;
+import com.openclassrooms.mddapi.payload.response.UserResponse;
 import com.openclassrooms.mddapi.repositories.UserRepository;
 import com.openclassrooms.mddapi.security.jwt.JwtUtils;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +45,9 @@ public class AuthController {
 
         String jwt = jwtUtils.generateJwtToken(user.getEmail());
 
-        return ResponseEntity.ok(new JwtResponse(jwt, user.getId(), user.getUsername()));
+        UserResponse userResponse = new UserResponse(user.getId(), user.getUsername(), user.getEmail());
+
+        return ResponseEntity.ok(new LoginResponse(jwt, userResponse));
     }
 
     @PostMapping("/register")
@@ -67,10 +71,9 @@ public class AuthController {
 
         User savedUser = userRepository.save(user);
 
-        return ResponseEntity.ok(new JwtResponse(
-                jwtUtils.generateJwtToken(savedUser.getEmail()),
-                savedUser.getId(),
-                savedUser.getUsername()
-        ));
+        UserResponse userResponse = new UserResponse(savedUser.getId(), savedUser.getUsername(), savedUser.getEmail());
+
+        String token = jwtUtils.generateJwtToken(savedUser.getEmail());
+        return ResponseEntity.ok(new JwtResponse(token, userResponse));
     }
 }

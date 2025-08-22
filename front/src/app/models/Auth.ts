@@ -1,15 +1,13 @@
+import { User } from './User';
+
 export interface LoginResponse {
   token: string;
-  type: string;
-  id: number;
-  username: string;
+  user: User;
 }
 
 export interface RegisterResponse {
   token: string;
-  type: string;
-  id: number;
-  username: string;
+  user: User;
 }
 
 export interface LoginRequest {

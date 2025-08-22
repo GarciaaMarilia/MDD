@@ -1,0 +1,135 @@
+.create-article-container {
+  padding-block: 12rem;
+  padding-inline: 20rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+  color: #666;
+}
+
+.back-button:hover {
+  background-color: #f5f5f5;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.article-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-control {
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-family: inherit;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+.form-control.error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.theme-select {
+  background-color: white;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 20px;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+.title-input {
+  color: #333;
+}
+
+.content-textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.5;
+  color: #333;
+}
+
+.create-button {
+  background-color: #7c3aed;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  align-self: center;
+  min-width: 120px;
+  margin-top: 10px;
+}
+
+.create-button:hover:not(:disabled) {
+  background-color: #6d28d9;
+  transform: translateY(-1px);
+}
+
+.create-button:disabled {
+  background-color: #d1d5db;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.error-message {
+  color: #ef4444;
+  font-size: 14px;
+  margin-top: 6px;
+  padding-left: 4px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .create-article-container {
+    padding: 15px;
+  }
+
+  .header h1 {
+    font-size: 16px;
+  }
+
+  .form-control {
+    font-size: 16px; /* Évite le zoom sur iOS */
+  }
+}

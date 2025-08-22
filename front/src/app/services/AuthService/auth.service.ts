@@ -4,55 +4,45 @@ import {
   RegisterRequest,
   RegisterResponse,
 } from 'src/app/models/Auth';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+import { User } from 'src/app/models/User';
 import { environment } from 'src/environments/environment';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = environment.apiUrl;
+  private apiUrl = `${environment.apiUrl}/auth`;
 
-  // BehaviorSubject para o estado de login
   private isLoggedInSubject = new BehaviorSubject<boolean>(
     this.hasValidToken()
   );
   public isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
-  // BehaviorSubject para informações do usuário
-  private userInfoSubject = new BehaviorSubject<any>(
-    this.getUserInfoFromToken()
-  );
+  private userInfoSubject = new BehaviorSubject<User | null>(null);
   public userInfo$ = this.userInfoSubject.asObservable();
-
-  private httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    }),
-  };
 
   constructor(private http: HttpClient, private router: Router) {}
 
   login(data: LoginRequest): Observable<LoginResponse> {
-    return this.http
-      .post<LoginResponse>(`${this.apiUrl}/login`, data, this.httpOptions)
-      .pipe(
-        tap((response) => {
-          this.setToken(response.token);
-        })
-      );
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, data).pipe(
+      tap((response) => {
+        this.userInfoSubject.next(response.user);
+        this.setToken(response.token);
+      })
+    );
   }
 
   register(data: RegisterRequest): Observable<RegisterResponse> {
     return this.http
-      .post<RegisterResponse>(`${this.apiUrl}/register`, data, this.httpOptions)
+      .post<RegisterResponse>(`${this.apiUrl}/register`, data)
       .pipe(
         tap((response) => {
+          this.userInfoSubject.next(response.user);
           this.setToken(response.token);
         })
       );
@@ -65,10 +55,8 @@ export class AuthService {
 
   private updateAuthState(): void {
     const isLoggedIn = this.hasValidToken();
-    const userInfo = this.getUserInfoFromToken();
 
     this.isLoggedInSubject.next(isLoggedIn);
-    this.userInfoSubject.next(userInfo);
   }
 
   public checkAuthStatus(): void {
@@ -79,7 +67,7 @@ export class AuthService {
     return this.isLoggedInSubject.value;
   }
 
-  getCurrentUserInfo(): any {
+  getCurrentUserInfo(): User | null {
     return this.userInfoSubject.value;
   }
 
@@ -110,20 +98,6 @@ export class AuthService {
     return localStorage.getItem('token');
   }
 
-  private getUserInfoFromToken(): any {
-    const token = this.getToken();
-
-    if (!token) {
-      return null;
-    }
-
-    try {
-      return this.decodeJWT(token);
-    } catch (error) {
-      return null;
-    }
-  }
-
   private decodeJWT(token: string): any {
     try {
       const payload = token.split('.')[1];
@@ -143,14 +117,5 @@ export class AuthService {
   logout(): void {
     this.router.navigate(['']);
     this.clearAuth();
-  }
-
-  getAuthHeaders(): HttpHeaders {
-    const token = this.getToken();
-    return new HttpHeaders({
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      Authorization: token ? `Bearer ${token}` : '',
-    });
   }
 }
