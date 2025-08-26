@@ -45,7 +45,7 @@ export class HeaderComponent implements OnInit {
   }
 
   navigateToArticles() {
-    this.router.navigate(['/initial-page']);
+    this.router.navigate(['/articles']);
   }
 
   navigateToTopics() {

@@ -28,7 +28,7 @@
 
         <div class="subscriptions-grid">
             <app-card *ngFor="let subscription of subscriptions" [content]="subscription" [hasButton]="true"
-                (cardClicked)="onUnsubscribe(subscription.id)"></app-card>
+                [titleButton]="'Se désabonner'" (buttonClicked)="onUnsubscribe(subscription.id)"></app-card>
         </div>
     </div>
 </div>

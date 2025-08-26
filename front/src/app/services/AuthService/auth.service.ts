@@ -6,8 +6,8 @@ import {
 } from 'src/app/models/Auth';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { User } from 'src/app/models/User';
 import { environment } from 'src/environments/environment';
@@ -26,13 +26,21 @@ export class AuthService {
   private userInfoSubject = new BehaviorSubject<User | null>(null);
   public userInfo$ = this.userInfoSubject.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      this.userInfoSubject.next(JSON.parse(savedUser));
+    }
+
+    this.updateAuthState();
+  }
 
   login(data: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, data).pipe(
       tap((response) => {
-        this.userInfoSubject.next(response.user);
         this.setToken(response.token);
+        this.userInfoSubject.next(response.user);
+        localStorage.setItem('user', JSON.stringify(response.user));
       })
     );
   }
@@ -110,6 +118,7 @@ export class AuthService {
 
   private clearAuth(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     this.isLoggedInSubject.next(false);
     this.userInfoSubject.next(null);
   }

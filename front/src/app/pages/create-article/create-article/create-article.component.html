@@ -14,7 +14,7 @@
             <select formControlName="topic" class="form-control theme-select"
                 [class.error]="topic?.invalid && topic?.touched">
                 <option value="" disabled>Sélectionner un thème</option>
-                <option *ngFor="let topic of topics" [value]="topic">
+                <option *ngFor="let topic of topics" [value]="topic.id">
                     {{ topic.title }}
                 </option>
             </select>

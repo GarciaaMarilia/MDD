@@ -1,38 +1,55 @@
+import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
-
-import { Article } from 'src/app/models/Article';
 import { Component, OnInit } from '@angular/core';
+
+import { User } from 'src/app/models/User';
+import { Article } from 'src/app/models/Article';
+import { AuthService } from 'src/app/services/AuthService/auth.service';
 import { ArticlesService } from 'src/app/services/Articles/articles.service';
+import { SubscriptionsService } from 'src/app/services/Subscriptions/subscriptions.service';
 
 @Component({
-  selector: 'app-initial-page',
-  templateUrl: './initial-page.component.html',
-  styleUrls: ['./initial-page.component.scss'],
+  selector: 'app-articles',
+  templateUrl: './articles.component.html',
+  styleUrls: ['./articles.component.scss'],
 })
-export class InitialPageComponent implements OnInit {
+export class ArticlesComponent implements OnInit {
+  user: User = {} as User;
   articles: Article[] = [];
 
   constructor(
     private router: Router,
-    private articlesService: ArticlesService
+    private authService: AuthService,
+    private articlesService: ArticlesService,
+    private subscriptionsService: SubscriptionsService
   ) {}
 
   ngOnInit(): void {
+    this.authService.userInfo$.subscribe((userInfo) => {
+      if (userInfo) {
+        this.user = userInfo;
+      }
+    });
+
     this.loadArticles();
   }
 
   loadArticles(): void {
-    this.articlesService.getAll().subscribe({
+    if (!this.user) {
+      console.warn('Utilisateur non défini');
+      return;
+    }
+    this.articlesService.getArticlesForUser(this.user.id).subscribe({
       next: (response) => {
-        this.articles = [...response];
+        this.articles = response;
+        console.log('articles', this.articles);
+        this.sortArticles();
       },
       error: (err) => {
-        console.error("Erreur lors de la création de l'article:", err);
-        alert("Erreur lors de la création de l'article.");
+        console.error('Erreur lors de la récupération des articles:', err);
+        alert('Erreur lors de la récupération des articles .');
       },
     });
-
-    this.sortArticles();
   }
 
   sortAsc: boolean = true;

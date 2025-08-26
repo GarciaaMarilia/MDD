@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
@@ -14,6 +14,7 @@ export class ArticlesService {
   constructor(private http: HttpClient) {}
 
   createItem(data: ArticleRequest): Observable<ArticleResponse> {
+    console.log(data);
     return this.http.post<ArticleResponse>(this.apiUrl, data);
   }
 
@@ -23,5 +24,11 @@ export class ArticlesService {
 
   getAll(): Observable<ArticleResponse[]> {
     return this.http.get<ArticleResponse[]>(this.apiUrl);
+  }
+
+  getArticlesForUser(userId: number): Observable<ArticleResponse[]> {
+    return this.http
+      .get<ArticleResponse[]>(`${this.apiUrl}/user/${userId}`)
+      .pipe(tap((articles) => console.log('Artigos do usuário:', articles)));
   }
 }

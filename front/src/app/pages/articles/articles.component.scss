@@ -1,4 +1,4 @@
-.initial-page {
+.container {
   padding: 24px;
   min-height: calc(100vh - 60px);
 }
@@ -68,10 +68,6 @@
 /* Empty State */
 .empty-state {
   text-align: center;
-  padding: 64px 32px;
-  background: white;
-  border-radius: 12px;
-  border: 2px dashed #dee2e6;
 }
 
 .empty-state p {
@@ -82,7 +78,7 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .initial-page {
+  .container {
     padding: 16px;
   }
 

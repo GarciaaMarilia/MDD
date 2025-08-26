@@ -1,4 +1,4 @@
-<div class="initial-page">
+<div class="container">
     <div class="page-header">
         <button class="create-article-btn" (click)="onCreateArticle()">
             Créer un article
@@ -6,7 +6,7 @@
 
         <div class="sort-container">
             <label>Trier par date</label>
-            <button class="sort-button" (click)="toggleSortOrder()">
+            <button disabled="articles.length === 0" class="sort-button" (click)="toggleSortOrder()">
                 <span *ngIf="sortAsc">&#9650;</span>
                 <span *ngIf="!sortAsc">&#9660;</span>
             </button>
@@ -15,14 +15,11 @@
     </div>
 
     <div class="articles-grid">
-        <app-card *ngFor="let article of articles" [content]="article" [hasButton]="true"
+        <app-card *ngFor="let article of articles" [content]="article" [hasButton]="false"
             (cardClicked)="onArticleClick(article.id)"></app-card>
     </div>
 
     <div class="empty-state" *ngIf="articles.length === 0">
         <p>Aucun article trouvé</p>
-        <button class="create-article-btn secondary" (click)="onCreateArticle()">
-            Créer votre premier article
-        </button>
     </div>
 </div>

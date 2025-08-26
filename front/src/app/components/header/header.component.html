@@ -14,19 +14,19 @@
             <button class="nav-link" (click)="navigateToTopics()">
                 Thèmes
             </button>
+            <div *ngIf="isLoggedIn" class="profile desktop-profile">
+                <button class="profile-btn" (click)="navigateToProfile()">
+                    <div class="profile-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                                fill="#666" />
+                        </svg>
+                    </div>
+                </button>
+            </div>
         </nav>
 
-        <div *ngIf="isLoggedIn" class="profile desktop-profile">
-            <button class="profile-btn" (click)="navigateToProfile()">
-                <div class="profile-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
-                            fill="#666" />
-                    </svg>
-                </div>
-            </button>
-        </div>
 
         <button *ngIf="isLoggedIn" class="mobile-menu-btn" (click)="toggleMobileMenu()">
             <div class="hamburger" [class.active]="isMobileMenuOpen">
@@ -41,23 +41,24 @@
 
     <nav class="mobile-nav" [class.active]="isMobileMenuOpen">
         <div class="mobile-nav-content">
+            <button class="mobile-nav-link disconnect-mobile" (click)="onDisconnect(); closeMobileMenu()">
+                Se déconnecter
+            </button>
             <button class="mobile-nav-link" (click)="navigateToArticles(); closeMobileMenu()">
                 Articles
             </button>
             <button class="mobile-nav-link" (click)="navigateToTopics(); closeMobileMenu()">
                 Thèmes
             </button>
-            <button class="mobile-nav-link profile-mobile" (click)="navigateToProfile(); closeMobileMenu()">
+        </div>
+        <button class="mobile-nav-link profile-btn" (click)="navigateToProfile(); closeMobileMenu()">
+            <div class="profile-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                     <path
                         d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
                         fill="currentColor" />
                 </svg>
-                Profile
-            </button>
-            <button class="mobile-nav-link disconnect-mobile" (click)="onDisconnect(); closeMobileMenu()">
-                Se déconnecter
-            </button>
-        </div>
+            </div>
+        </button>
     </nav>
 </header>

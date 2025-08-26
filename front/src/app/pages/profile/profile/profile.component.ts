@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/models/User';
 import { Topic } from 'src/app/models/Topic';
 import { AuthService } from 'src/app/services/AuthService/auth.service';
+import { SubscriptionsService } from 'src/app/services/Subscriptions/subscriptions.service';
 
 @Component({
   selector: 'app-profile',
@@ -15,27 +16,25 @@ export class ProfileComponent implements OnInit {
 
   profileForm!: FormGroup;
 
-  subscriptions: Topic[] = [
-    {
-      id: 1,
-      title: 'Titre du thème',
-      content:
-        "Description: lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard...",
-    },
-    {
-      id: 2,
-      title: 'Titre du thème',
-      content:
-        "Description: lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard...",
-    },
-  ];
+  subscriptions: Topic[] = [];
 
-  constructor(private authService: AuthService, private fb: FormBuilder) {}
+  constructor(
+    private authService: AuthService,
+    private fb: FormBuilder,
+    private subscriptionsService: SubscriptionsService
+  ) {}
 
   ngOnInit() {
     this.authService.userInfo$.subscribe((userInfo) => {
       if (userInfo) {
         this.user = userInfo;
+
+        this.subscriptionsService
+          .getUserSubscriptions(this.user.id)
+          .subscribe((subs) => {
+            this.subscriptions = subs;
+          });
+
         this.profileForm = this.fb.group({
           username: [
             this.user.username,
@@ -62,25 +61,12 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  onUnsubscribe(subscriptionId: number): void {
-    const subscription = this.subscriptions.find(
-      (sub) => sub.id === subscriptionId
-    );
-
-    if (
-      confirm(
-        `Êtes-vous sûr de vouloir vous désabonner de "${subscription?.title}" ?`
-      )
-    ) {
-      this.subscriptions = this.subscriptions.filter(
-        (sub) => sub.id !== subscriptionId
-      );
-
-      // Ici vous pouvez appeler un service pour supprimer l'abonnement
-      // this.subscriptionService.unsubscribe(subscriptionId);
-
-      console.log(`Désabonnement de l'abonnement ID: ${subscriptionId}`);
-    }
+  onUnsubscribe(topicId: number): void {
+    this.subscriptionsService
+      .unsubscribe(this.user.id, topicId)
+      .subscribe((user) => {
+        this.user = user;
+      });
   }
 
   private markFormGroupTouched(): void {
@@ -90,7 +76,6 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  // Getters pour faciliter l'accès aux contrôles dans le template
   get username() {
     return this.profileForm.get('username');
   }

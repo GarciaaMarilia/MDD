@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
         next: (res) => {
           console.log('Login OK', res);
           localStorage.setItem('token', res.token);
-          this.navigateToInitialPage();
+          this.navigateToArticles();
         },
         error: (err) => console.error('Login error', err),
       });
@@ -41,8 +41,8 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  navigateToInitialPage(): void {
-    this.router.navigate(['/initial-page']);
+  navigateToArticles(): void {
+    this.router.navigate(['/articles']);
   }
 
   private markFormGroupTouched() {

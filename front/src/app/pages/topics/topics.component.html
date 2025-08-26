@@ -1,5 +1,7 @@
 <div class="container">
     <div class="topics-grid">
-        <app-card *ngFor="let topic of topics" [content]="topic" [hasButton]="true"></app-card>
+        <app-card *ngFor="let topic of topics" [content]="topic" [hasButton]="true"
+            [titleButton]="getButtonTitle(topic.id)" (buttonClicked)="toggleSubscription(topic.id)">
+        </app-card>
     </div>
 </div>
