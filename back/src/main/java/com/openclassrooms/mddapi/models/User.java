@@ -8,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -34,6 +36,14 @@ public class User {
     @ToString.Exclude
     @Column(nullable = false)
     private String password;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_subscriptions",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "topic_id")
+    )
+    private Set<Topic> subscriptions = new HashSet<>();
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)

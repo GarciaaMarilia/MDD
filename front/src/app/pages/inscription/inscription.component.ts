@@ -32,7 +32,7 @@ export class InscriptionComponent {
       this.authService.register({ ...formData }).subscribe({
         next: (res) => {
           localStorage.setItem('token', res.token);
-          this.navigateToInitialPage();
+          this.navigateToArticles();
         },
         error: (err) => console.error('Register error', err),
       });
@@ -42,8 +42,8 @@ export class InscriptionComponent {
     }
   }
 
-  navigateToInitialPage(): void {
-    this.router.navigate(['/initial-page']);
+  navigateToArticles(): void {
+    this.router.navigate(['/articles']);
   }
 
   private markFormGroupTouched() {

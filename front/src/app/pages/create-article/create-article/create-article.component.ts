@@ -56,9 +56,13 @@ export class CreateArticleComponent implements OnInit {
 
   onSubmit() {
     if (this.articleForm.valid) {
+      const { title, content, topic } = this.articleForm.value;
+
       const articleData: ArticleRequest = {
-        user: { id: this.user.id },
-        ...this.articleForm.value,
+        userId: this.user.id,
+        topicId: topic,
+        title,
+        content,
       };
 
       this.articlesService.createItem(articleData).subscribe({

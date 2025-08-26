@@ -2,7 +2,7 @@ import { User } from './User';
 
 export interface Article {
   id: number;
-  topic: string;
+  topicId: number;
   title: string;
   createdAt: string;
   user: User;
@@ -10,7 +10,7 @@ export interface Article {
 }
 
 export interface ArticleRequest {
-  topic: string;
+  topicId: number;
   title: string;
   content: string;
   userId: number;
@@ -18,7 +18,7 @@ export interface ArticleRequest {
 
 export interface ArticleResponse {
   id: number;
-  topic: string;
+  topicId: number;
   title: string;
   content: string;
   createdAt: string;

@@ -13,15 +13,15 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
+import { TopicsComponent } from './pages/topics/topics.component';
 import { AppInitService } from './services/AppInit/app-init.service';
 import { HeaderComponent } from './components/header/header.component';
+import { ArticlesComponent } from './pages/articles/articles.component';
 import { CardComponent } from './components/article-card/card.component';
 import { AuthInterceptor } from './services/interceptors/auth.interceptor';
 import { ProfileComponent } from './pages/profile/profile/profile.component';
 import { InscriptionComponent } from './pages/inscription/inscription.component';
-import { InitialPageComponent } from './pages/initial-page/initial-page.component';
 import { CreateArticleComponent } from './pages/create-article/create-article/create-article.component';
-import { TopicsComponent } from './pages/topics/topics.component';
 
 export function appInitializerFactory(appInitService: AppInitService) {
   return () => appInitService.init();
@@ -33,7 +33,7 @@ export function appInitializerFactory(appInitService: AppInitService) {
     LoginComponent,
     InscriptionComponent,
     HeaderComponent,
-    InitialPageComponent,
+    ArticlesComponent,
     CreateArticleComponent,
     ProfileComponent,
     CardComponent,

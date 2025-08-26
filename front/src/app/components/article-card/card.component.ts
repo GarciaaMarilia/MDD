@@ -11,6 +11,7 @@ import { Article } from 'src/app/models/Article';
 export class CardComponent implements OnInit {
   @Input() content!: Article | Topic;
   @Input() hasButton: boolean = false;
+  @Input() titleButton: string = '';
   @Output() cardClicked = new EventEmitter<Article | Topic>();
   @Output() buttonClicked = new EventEmitter<Article | Topic>();
 
@@ -27,7 +28,6 @@ export class CardComponent implements OnInit {
     this.buttonClicked.emit(this.content);
   }
 
-  // Tipo guarda para template
   isArticle(content: any): content is Article {
     return (content as Article).createdAt !== undefined;
   }

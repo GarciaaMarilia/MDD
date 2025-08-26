@@ -14,9 +14,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 12px 24px;
-  max-width: 1200px;
   margin: 0 auto;
   height: 60px;
+  width: 90%;
 }
 
 .brand {
@@ -34,8 +34,8 @@
   display: flex;
   align-items: center;
   gap: 32px;
+  justify-content: flex-end; 
   flex: 1;
-  justify-content: center;
 }
 
 .nav-link {
@@ -191,6 +191,8 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  align-items: flex-end;
+  height: calc(100% - 80px);
 }
 
 .mobile-nav-link {
@@ -202,11 +204,15 @@
   padding: 16px 0;
   text-align: left;
   color: #333;
-  border-bottom: 1px solid #f0f0f0;
   transition: color 0.2s ease;
   display: flex;
   align-items: center;
-  gap: 12px;
+}
+
+.mobile-nav .profile-btn {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
 }
 
 .mobile-nav-link:hover {
@@ -216,7 +222,6 @@
 .mobile-nav-link.disconnect-mobile {
   color: #e74c3c;
   font-weight: 500;
-  margin-top: 16px;
 }
 
 .mobile-nav-link.disconnect-mobile:hover {

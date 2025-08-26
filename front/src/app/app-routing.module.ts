@@ -5,9 +5,9 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { TopicsComponent } from './pages/topics/topics.component';
+import { ArticlesComponent } from './pages/articles/articles.component';
 import { ProfileComponent } from './pages/profile/profile/profile.component';
 import { InscriptionComponent } from './pages/inscription/inscription.component';
-import { InitialPageComponent } from './pages/initial-page/initial-page.component';
 import { CreateArticleComponent } from './pages/create-article/create-article/create-article.component';
 
 // consider a guard combined with canLoad / canActivate route option
@@ -17,8 +17,8 @@ const routes: Routes = [
   { path: 'connexion', component: LoginComponent },
   { path: 'inscription', component: InscriptionComponent },
   {
-    path: 'initial-page',
-    component: InitialPageComponent,
+    path: 'articles',
+    component: ArticlesComponent,
     canActivate: [AuthGuard],
   },
   {
