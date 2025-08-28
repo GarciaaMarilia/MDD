@@ -75,12 +75,12 @@ export class ArticlesComponent implements OnInit {
     this.router.navigate(['/create-article']);
   }
 
-  onSortChange(): void {
-    this.sortArticles();
+  navigateToDetails(articleId: number): void {
+    this.router.navigate([`/details-article/${articleId}`]);
   }
 
-  onArticleClick(id: number): void {
-    this.router.navigate(['/article', id]);
+  onSortChange(): void {
+    this.sortArticles();
   }
 
   formatDate(dateString: string): string {

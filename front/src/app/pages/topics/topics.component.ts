@@ -23,8 +23,8 @@ export class TopicsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getAllTopics();
     this.getCurrentUser();
+    this.getAllTopics();
   }
 
   getCurrentUser() {
@@ -70,6 +70,7 @@ export class TopicsComponent implements OnInit {
           this.user = user;
         });
     }
+    window.location.reload();
   }
 
   getButtonTitle(topicId: number): string {

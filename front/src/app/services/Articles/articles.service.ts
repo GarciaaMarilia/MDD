@@ -26,7 +26,6 @@ export class ArticlesService {
   }
 
   getArticlesForUser(userId: number): Observable<ArticleResponse[]> {
-    console.log(userId);
     return this.http.get<ArticleResponse[]>(`${this.apiUrl}/user/${userId}`);
   }
 }

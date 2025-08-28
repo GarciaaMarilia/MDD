@@ -8,6 +8,7 @@ import { TopicsComponent } from './pages/topics/topics.component';
 import { ArticlesComponent } from './pages/articles/articles.component';
 import { ProfileComponent } from './pages/profile/profile/profile.component';
 import { InscriptionComponent } from './pages/inscription/inscription.component';
+import { DetailArticleComponent } from './pages/detail-article/detail-article.component';
 import { CreateArticleComponent } from './pages/create-article/create-article/create-article.component';
 
 // consider a guard combined with canLoad / canActivate route option
@@ -34,6 +35,11 @@ const routes: Routes = [
   {
     path: 'topics',
     component: TopicsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'details-article/:id',
+    component: DetailArticleComponent,
     canActivate: [AuthGuard],
   },
 ];
