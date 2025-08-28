@@ -2,6 +2,7 @@ package com.openclassrooms.mddapi.payload.response;
 
 import com.openclassrooms.mddapi.models.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

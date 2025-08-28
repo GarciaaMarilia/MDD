@@ -1,6 +1,7 @@
 .card {
   background-color: #f8f9fa;
   padding: 30px;
+  min-height: 160px;
   border-radius: 12px;
   border: 1px solid #e9ecef;
   transition: all 0.3s ease;
@@ -55,6 +56,10 @@ button {
 
   &:active {
     transform: translateY(0);
+  }
+
+  &:disabled {
+    background-color: #939393;
   }
 }
 

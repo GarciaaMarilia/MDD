@@ -1,4 +1,3 @@
-import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
@@ -6,7 +5,6 @@ import { User } from 'src/app/models/User';
 import { Article } from 'src/app/models/Article';
 import { AuthService } from 'src/app/services/AuthService/auth.service';
 import { ArticlesService } from 'src/app/services/Articles/articles.service';
-import { SubscriptionsService } from 'src/app/services/Subscriptions/subscriptions.service';
 
 @Component({
   selector: 'app-articles',
@@ -16,22 +14,25 @@ import { SubscriptionsService } from 'src/app/services/Subscriptions/subscriptio
 export class ArticlesComponent implements OnInit {
   user: User = {} as User;
   articles: Article[] = [];
+  sortAsc: boolean = true;
 
   constructor(
     private router: Router,
     private authService: AuthService,
-    private articlesService: ArticlesService,
-    private subscriptionsService: SubscriptionsService
+    private articlesService: ArticlesService
   ) {}
 
   ngOnInit(): void {
+    this.getCurrentUser();
+  }
+
+  getCurrentUser() {
     this.authService.userInfo$.subscribe((userInfo) => {
       if (userInfo) {
         this.user = userInfo;
+        this.loadArticles();
       }
     });
-
-    this.loadArticles();
   }
 
   loadArticles(): void {
@@ -42,7 +43,6 @@ export class ArticlesComponent implements OnInit {
     this.articlesService.getArticlesForUser(this.user.id).subscribe({
       next: (response) => {
         this.articles = response;
-        console.log('articles', this.articles);
         this.sortArticles();
       },
       error: (err) => {
@@ -51,8 +51,6 @@ export class ArticlesComponent implements OnInit {
       },
     });
   }
-
-  sortAsc: boolean = true;
 
   toggleSortOrder(): void {
     this.sortAsc = !this.sortAsc;

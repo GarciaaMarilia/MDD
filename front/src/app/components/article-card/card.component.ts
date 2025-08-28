@@ -12,6 +12,8 @@ export class CardComponent implements OnInit {
   @Input() content!: Article | Topic;
   @Input() hasButton: boolean = false;
   @Input() titleButton: string = '';
+  @Input() disabledButton?: boolean;
+
   @Output() cardClicked = new EventEmitter<Article | Topic>();
   @Output() buttonClicked = new EventEmitter<Article | Topic>();
 
@@ -28,7 +30,7 @@ export class CardComponent implements OnInit {
     this.buttonClicked.emit(this.content);
   }
 
-  isArticle(content: any): content is Article {
+  isArticle(content: Article | Topic): content is Article {
     return (content as Article).createdAt !== undefined;
   }
 

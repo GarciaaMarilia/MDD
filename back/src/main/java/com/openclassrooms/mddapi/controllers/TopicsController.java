@@ -5,6 +5,7 @@ import com.openclassrooms.mddapi.repositories.TopicsRepository;
 
 import com.openclassrooms.mddapi.services.TopicsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,9 @@ public class TopicsController {
     private final TopicsService topicsService;
 
     @GetMapping
-    public List<Topic> getAllTopics() {
-        return topicsService.getAllTopics();
+    public ResponseEntity<List<Topic>> getAllTopics() {
+
+        List<Topic> topics = topicsService.getAllTopics();
+        return ResponseEntity.ok(topics);
     }
 }

@@ -3,6 +3,8 @@ import {
   LoginResponse,
   RegisterRequest,
   RegisterResponse,
+  UpdateRequest,
+  UpdateResponse,
 } from 'src/app/models/Auth';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
@@ -54,6 +56,15 @@ export class AuthService {
           this.setToken(response.token);
         })
       );
+  }
+
+  update(data: UpdateRequest): Observable<UpdateResponse> {
+    return this.http.put<UpdateResponse>(`${this.apiUrl}/update`, data).pipe(
+      tap((response) => {
+        this.userInfoSubject.next(response.user);
+        this.setToken(response.token);
+      })
+    );
   }
 
   private setToken(token: string): void {

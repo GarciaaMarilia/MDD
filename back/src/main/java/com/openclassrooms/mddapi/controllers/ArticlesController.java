@@ -1,70 +1,46 @@
 package com.openclassrooms.mddapi.controllers;
 
-import com.openclassrooms.mddapi.models.Article;
 import com.openclassrooms.mddapi.payload.request.ArticleRequest;
 import com.openclassrooms.mddapi.payload.response.ArticleResponse;
 import com.openclassrooms.mddapi.services.ArticlesService;
-import com.openclassrooms.mddapi.services.TopicsService;
-import com.openclassrooms.mddapi.services.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/articles")
 @RequiredArgsConstructor
+@Slf4j
 public class ArticlesController {
 
     private final ArticlesService articlesService;
-    private final TopicsService topicsService;
-    private final UserService userService;
 
     @PostMapping
-    public ArticleResponse createArticle(@RequestBody ArticleRequest dto) {
-        Article article = new Article();
-        article.setTitle(dto.getTitle());
-        article.setContent(dto.getContent());
-        article.setCreatedAt(LocalDateTime.now());
-        article.setTopic(topicsService.getTopicById(dto.getTopicId()));
-        article.setUser(userService.getUserById(dto.getUserId()));
-
-        Article saved = articlesService.createArticle(article);
-        return mapToResponse(saved);
+    public ResponseEntity<ArticleResponse> createArticle(@RequestBody ArticleRequest articleRequest) {
+        ArticleResponse createdArticle = articlesService.createArticle(articleRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdArticle);
     }
-
-    private ArticleResponse mapToResponse(Article article) {
-        return new ArticleResponse(
-                article.getId(),
-                article.getTopic().getId(),
-                article.getTitle(),
-                article.getContent(),
-                article.getCreatedAt(),
-                article.getUser()
-        );
-    }
-
 
     @GetMapping
-    public ResponseEntity<List<Article>> getAllArticles() {
-        return ResponseEntity.ok(articlesService.getAllArticles());
+    public ResponseEntity<List<ArticleResponse>> getAllArticles() {
+        List<ArticleResponse> articles = articlesService.getAllArticles();
+        return ResponseEntity.ok(articles);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Article> getArticleById(@PathVariable Long id) {
+    public ResponseEntity<ArticleResponse> getArticleById(@PathVariable Long id) {
         return articlesService.getArticleById(id)
-                .map(ResponseEntity::ok)
+                .map(article -> ResponseEntity.ok(article))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/user/{userId}")
-    public List<ArticleResponse> getArticlesForUser(@PathVariable Long userId) {
-        List<Article> articles = articlesService.getArticlesByUser(userId);
-        return articles.stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
+    public ResponseEntity<List<ArticleResponse>> getArticlesForUser(@PathVariable Long userId) {
+        List<ArticleResponse> userArticles = articlesService.getArticlesByUser(userId);
+        return ResponseEntity.ok(userArticles);
     }
 }

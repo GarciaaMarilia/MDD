@@ -16,7 +16,7 @@
         <p>{{ content.content || content.content }}</p>
     </div>
 
-    <button *ngIf="hasButton" (click)="onButtonClick($event)">
+    <button *ngIf="hasButton" [disabled]="disabledButton" (click)="onButtonClick($event)">
         {{ titleButton }}
     </button>
 </div>
