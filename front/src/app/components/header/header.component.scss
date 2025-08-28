@@ -34,7 +34,7 @@
   display: flex;
   align-items: center;
   gap: 32px;
-  justify-content: flex-end; 
+  justify-content: flex-end;
   flex: 1;
 }
 
@@ -57,7 +57,7 @@
 
 .nav-link.disconnect {
   color: #e74c3c;
-  font-weight: 500;
+  font-weight: bold;
 }
 
 .nav-link.disconnect:hover {
@@ -152,6 +152,11 @@
   transform: rotate(-135deg);
 }
 
+.nav-link.active,
+.mobile-nav-link.active {
+  color: #8b5cf6; 
+}
+
 .mobile-menu-overlay {
   display: none;
   position: fixed;
@@ -221,7 +226,7 @@
 
 .mobile-nav-link.disconnect-mobile {
   color: #e74c3c;
-  font-weight: 500;
+  font-weight: bold;
 }
 
 .mobile-nav-link.disconnect-mobile:hover {

@@ -19,12 +19,16 @@ export class ProfileComponent implements OnInit {
   subscriptions: Topic[] = [];
 
   constructor(
-    private authService: AuthService,
     private fb: FormBuilder,
+    private authService: AuthService,
     private subscriptionsService: SubscriptionsService
   ) {}
 
   ngOnInit() {
+    this.getCurrentUserAndInfos();
+  }
+
+  getCurrentUserAndInfos() {
     this.authService.userInfo$.subscribe((userInfo) => {
       if (userInfo) {
         this.user = userInfo;
@@ -48,14 +52,20 @@ export class ProfileComponent implements OnInit {
   }
 
   onSaveProfile(): void {
-    if (this.profileForm.valid) {
-      const profileData = this.profileForm.value;
-      console.log('Profil sauvegardé:', profileData);
-
-      // Ici vous pouvez appeler un service pour sauvegarder le profil
-      // this.userService.updateProfile(profileData);
-
-      alert('Profil sauvegardé avec succès!');
+    if (this.profileForm.valid && this.user) {
+      const profileData = {
+        id: this.user.id,
+        ...this.profileForm.value,
+      };
+      this.authService.update(profileData).subscribe({
+        next: () => {
+          alert('Profil mis à jour avec succès !');
+        },
+        error: (err) => {
+          console.error('Erreur lors de la mise à jour du profil :', err);
+          alert('Erreur lors de la mise à jour du profil.');
+        },
+      });
     } else {
       this.markFormGroupTouched();
     }
@@ -66,6 +76,7 @@ export class ProfileComponent implements OnInit {
       .unsubscribe(this.user.id, topicId)
       .subscribe((user) => {
         this.user = user;
+        this.getCurrentUserAndInfos();
       });
   }
 

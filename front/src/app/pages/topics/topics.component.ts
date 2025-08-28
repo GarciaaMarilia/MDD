@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Topic } from 'src/app/models/Topic';
 import { User } from 'src/app/models/User';
+import { Topic } from 'src/app/models/Topic';
+import { TopicsService } from 'src/app/services/Topics/topics.service';
 import { AuthService } from 'src/app/services/AuthService/auth.service';
 import { SubscriptionsService } from 'src/app/services/Subscriptions/subscriptions.service';
-import { TopicsService } from 'src/app/services/Topics/topics.service';
 
 @Component({
   selector: 'app-topics',
@@ -14,6 +14,7 @@ import { TopicsService } from 'src/app/services/Topics/topics.service';
 export class TopicsComponent implements OnInit {
   user: User = {} as User;
   topics: Topic[] = [];
+  subscriptions: Topic[] = [];
 
   constructor(
     private authService: AuthService,
@@ -30,6 +31,12 @@ export class TopicsComponent implements OnInit {
     this.authService.userInfo$.subscribe((userInfo) => {
       if (userInfo) {
         this.user = userInfo;
+
+        this.subscriptionsService
+          .getUserSubscriptions(this.user.id)
+          .subscribe((subs) => {
+            this.subscriptions = subs;
+          });
       }
     });
   }
@@ -46,11 +53,10 @@ export class TopicsComponent implements OnInit {
   }
 
   isSubscribed(topicId: number): boolean {
-    return this.subscriptionsService.isSubscribed(this.user, topicId);
+    return this.subscriptions.some((topic: Topic) => topic.id === topicId);
   }
 
   toggleSubscription(topicId: number) {
-    console.log('aaaa', topicId);
     if (this.isSubscribed(topicId)) {
       this.subscriptionsService
         .unsubscribe(this.user.id, topicId)
@@ -66,8 +72,11 @@ export class TopicsComponent implements OnInit {
     }
   }
 
-  // Retorna o título correto do botão
   getButtonTitle(topicId: number): string {
-    return this.isSubscribed(topicId) ? 'Se désabonner' : "S'abonner";
+    return this.isSubscribed(topicId) ? 'Déjà abonné' : "S'abonner";
+  }
+
+  getDisabledButton(topicId: number): boolean {
+    return this.isSubscribed(topicId);
   }
 }

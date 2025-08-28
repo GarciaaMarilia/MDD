@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+
 import { AuthService } from 'src/app/services/AuthService/auth.service';
 
 @Component({
@@ -20,7 +21,6 @@ export class HeaderComponent implements OnInit {
     this.authSubscription = this.authService.isLoggedIn$.subscribe(
       (loggedIn) => {
         this.isLoggedIn = loggedIn;
-        // this.userInfo = this.authService.getUserInfo();
       }
     );
   }
@@ -56,6 +56,10 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/profile']);
   }
 
+  isActiveRoute(route: string): boolean {
+    return this.router.url === route;
+  }
+
   getUserDisplayName(): string {
     if (this.userInfo?.name) {
       return this.userInfo.name;
@@ -63,6 +67,6 @@ export class HeaderComponent implements OnInit {
     if (this.userInfo?.email) {
       return this.userInfo.email.split('@')[0];
     }
-    return 'Usuário';
+    return 'User';
   }
 }

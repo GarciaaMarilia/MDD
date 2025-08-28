@@ -19,6 +19,6 @@ public class TopicsService {
 
     public Topic getTopicById(Long id) {
         return topicsRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Topic não encontrado com id: " + id));
+                .orElseThrow(() -> new RuntimeException("Topic not found with id: " + id));
     }
 }

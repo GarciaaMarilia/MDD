@@ -8,10 +8,10 @@
             <button class="nav-link disconnect" (click)="onDisconnect()">
                 Se déconnecter
             </button>
-            <button class="nav-link" (click)="navigateToArticles()">
+            <button class="nav-link" [class.active]="isActiveRoute('/articles')" (click)="navigateToArticles()">
                 Articles
             </button>
-            <button class="nav-link" (click)="navigateToTopics()">
+            <button class="nav-link" [class.active]="isActiveRoute('/topics')" (click)="navigateToTopics()">
                 Thèmes
             </button>
             <div *ngIf="isLoggedIn" class="profile desktop-profile">
@@ -44,10 +44,12 @@
             <button class="mobile-nav-link disconnect-mobile" (click)="onDisconnect(); closeMobileMenu()">
                 Se déconnecter
             </button>
-            <button class="mobile-nav-link" (click)="navigateToArticles(); closeMobileMenu()">
+            <button class="mobile-nav-link" [class.active]="isActiveRoute('/articles')"
+                (click)="navigateToArticles(); closeMobileMenu()">
                 Articles
             </button>
-            <button class="mobile-nav-link" (click)="navigateToTopics(); closeMobileMenu()">
+            <button class="mobile-nav-link" [class.active]="isActiveRoute('/topics')"
+                (click)="navigateToTopics(); closeMobileMenu()">
                 Thèmes
             </button>
         </div>
