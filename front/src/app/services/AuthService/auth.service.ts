@@ -66,7 +66,6 @@ export class AuthService {
 
   private updateAuthState(): void {
     const isLoggedIn = this.hasValidToken();
-    console.log('aaa', isLoggedIn);
     this.isLoggedInSubject.next(isLoggedIn);
   }
 

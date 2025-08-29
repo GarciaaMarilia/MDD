@@ -12,6 +12,7 @@ import { TopicsService } from 'src/app/services/Topics/topics.service';
 import { AuthService } from 'src/app/services/AuthService/auth.service';
 import { CommentRequest, CommentResponse } from 'src/app/models/Comment';
 import { ArticlesService } from 'src/app/services/Articles/articles.service';
+import { CommentsService } from 'src/app/services/CommentsService/comments.service';
 
 @Component({
   selector: 'app-detail-article',
@@ -36,7 +37,8 @@ export class DetailArticleComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private authService: AuthService,
     private topicsService: TopicsService,
-    private articlesService: ArticlesService
+    private articlesService: ArticlesService,
+    private commentsService: CommentsService
   ) {
     this.initializeForm();
   }
@@ -117,7 +119,7 @@ export class DetailArticleComponent implements OnInit, OnDestroy {
   }
 
   private loadComments(): void {
-    this.articlesService
+    this.commentsService
       .getCommentsByArticleId(this.articleId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -142,7 +144,7 @@ export class DetailArticleComponent implements OnInit, OnDestroy {
 
     this.isSubmittingComment = true;
 
-    this.articlesService
+    this.commentsService
       .createComment(this.articleId, commentData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
