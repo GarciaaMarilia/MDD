@@ -22,6 +22,7 @@ import { AuthInterceptor } from './services/interceptors/auth.interceptor';
 import { ProfileComponent } from './pages/profile/profile/profile.component';
 import { InscriptionComponent } from './pages/inscription/inscription.component';
 import { CreateArticleComponent } from './pages/create-article/create-article/create-article.component';
+import { DetailArticleComponent } from './pages/detail-article/detail-article.component';
 
 export function appInitializerFactory(appInitService: AppInitService) {
   return () => appInitService.init();
@@ -38,6 +39,7 @@ export function appInitializerFactory(appInitService: AppInitService) {
     ProfileComponent,
     CardComponent,
     TopicsComponent,
+    DetailArticleComponent,
   ],
   imports: [
     BrowserModule,

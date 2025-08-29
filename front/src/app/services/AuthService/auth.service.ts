@@ -28,21 +28,12 @@ export class AuthService {
   private userInfoSubject = new BehaviorSubject<User | null>(null);
   public userInfo$ = this.userInfoSubject.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) {
-    const savedUser = localStorage.getItem('user');
-    if (savedUser) {
-      this.userInfoSubject.next(JSON.parse(savedUser));
-    }
-
-    this.updateAuthState();
-  }
+  constructor(private http: HttpClient, private router: Router) {}
 
   login(data: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, data).pipe(
       tap((response) => {
-        this.setToken(response.token);
-        this.userInfoSubject.next(response.user);
-        localStorage.setItem('user', JSON.stringify(response.user));
+        this.setToken(response.token, response.user);
       })
     );
   }
@@ -52,8 +43,7 @@ export class AuthService {
       .post<RegisterResponse>(`${this.apiUrl}/register`, data)
       .pipe(
         tap((response) => {
-          this.userInfoSubject.next(response.user);
-          this.setToken(response.token);
+          this.setToken(response.token, response.user);
         })
       );
   }
@@ -61,20 +51,22 @@ export class AuthService {
   update(data: UpdateRequest): Observable<UpdateResponse> {
     return this.http.put<UpdateResponse>(`${this.apiUrl}/update`, data).pipe(
       tap((response) => {
-        this.userInfoSubject.next(response.user);
-        this.setToken(response.token);
+        this.setToken(response.token, response.user);
       })
     );
   }
 
-  private setToken(token: string): void {
+  private setToken(token: string, user: User): void {
     localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
+    this.userInfoSubject.next(user);
+
     this.updateAuthState();
   }
 
   private updateAuthState(): void {
     const isLoggedIn = this.hasValidToken();
-
+    console.log('aaa', isLoggedIn);
     this.isLoggedInSubject.next(isLoggedIn);
   }
 
@@ -123,7 +115,7 @@ export class AuthService {
       const decodedPayload = atob(payload);
       return JSON.parse(decodedPayload);
     } catch (error) {
-      throw new Error('Token inválido');
+      throw new Error('Invalid Token');
     }
   }
 

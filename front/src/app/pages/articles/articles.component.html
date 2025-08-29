@@ -16,7 +16,7 @@
 
     <div class="articles-grid">
         <app-card *ngFor="let article of articles" [content]="article" [hasButton]="false"
-            (cardClicked)="onArticleClick(article.id)"></app-card>
+            (cardClicked)="navigateToDetails(article.id)"></app-card>
     </div>
 
     <div class="empty-state" *ngIf="articles.length === 0">

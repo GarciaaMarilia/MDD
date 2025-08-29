@@ -32,10 +32,9 @@ public class AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         User user = userRepository.findByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new RuntimeException("Error: User not found."));
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         String jwt = jwtUtils.generateJwtToken(user.getEmail());
-
         UserResponse userResponse = new UserResponse(user.getId(), user.getUsername(), user.getEmail());
 
         return new LoginResponse(jwt, userResponse);
@@ -43,11 +42,11 @@ public class AuthService {
 
     public JwtResponse register(RegisterRequest registerRequest) {
         if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
-            throw new RuntimeException("Error: Email is already taken!");
+            throw new RuntimeException("Email is already taken");
         }
 
         if (userRepository.findByUsername(registerRequest.getUsername()).isPresent()) {
-            throw new RuntimeException("Error: Username is already taken!");
+            throw new RuntimeException("Username is already taken");
         }
 
         User user = new User();
@@ -56,28 +55,22 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
 
         User savedUser = userRepository.save(user);
-
-        UserResponse userResponse = new UserResponse(savedUser.getId(), savedUser.getUsername(), savedUser.getEmail());
-
         String token = jwtUtils.generateJwtToken(savedUser.getEmail());
-        return new JwtResponse(token, userResponse);
+
+        return new JwtResponse(token, new UserResponse(savedUser.getId(), savedUser.getUsername(), savedUser.getEmail()));
     }
 
     public UserResponse update(UpdateRequest updateRequest) {
         User user = userRepository.findById(updateRequest.getId())
-                .orElseThrow(() -> new RuntimeException("Error: User not found."));
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         userRepository.findByEmail(updateRequest.getEmail())
                 .filter(existingUser -> !existingUser.getId().equals(updateRequest.getId()))
-                .ifPresent(existingUser -> {
-                    throw new RuntimeException("Error: Email is already taken!");
-                });
+                .ifPresent(existingUser -> { throw new RuntimeException("Email is already taken"); });
 
         userRepository.findByUsername(updateRequest.getUsername())
                 .filter(existingUser -> !existingUser.getId().equals(updateRequest.getId()))
-                .ifPresent(existingUser -> {
-                    throw new RuntimeException("Error: Username is already taken!");
-                });
+                .ifPresent(existingUser -> { throw new RuntimeException("Username is already taken"); });
 
         user.setEmail(updateRequest.getEmail());
         user.setUsername(updateRequest.getUsername());
@@ -87,11 +80,7 @@ public class AuthService {
         }
 
         User updatedUser = userRepository.save(user);
-
-        return new UserResponse(
-                updatedUser.getId(),
-                updatedUser.getUsername(),
-                updatedUser.getEmail()
-        );
+        return new UserResponse(updatedUser.getId(), updatedUser.getUsername(), updatedUser.getEmail());
     }
 }
+
