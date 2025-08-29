@@ -23,7 +23,16 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.pattern(
+            /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).+$/
+          ),
+        ],
+      ],
     });
   }
 
@@ -35,7 +44,10 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('token', res.token);
           this.navigateToArticles();
         },
-        error: (err) => console.error('Login error', err),
+        error: (err) => {
+          alert('Login error');
+          console.error('Login error', err);
+        },
       });
     } else {
       this.markFormGroupTouched();

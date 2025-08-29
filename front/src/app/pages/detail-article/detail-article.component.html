@@ -34,7 +34,8 @@
             <div class="comments-list" *ngIf="comments.length > 0">
                 <div class="comment-item" *ngFor="let comment of comments">
                     <div class="comment-header">
-                        <span class="comment-username">{{ comment.username }}</span>
+                        <span class="comment-username">{{ comment.user.username }}</span>
+                        <span class="comment-date">{{ comment.createdAt | date:'dd/MM/yyyy à HH:mm' }}</span>
                     </div>
                     <div class="comment-content">
                         {{ comment.content }}
@@ -42,24 +43,31 @@
                 </div>
             </div>
 
+            <div class="no-comments" *ngIf="comments.length === 0">
+                <p>Aucun commentaire pour le moment. Soyez le premier à commenter !</p>
+            </div>
+
             <div class="comment-form">
                 <div class="form-group">
-                    <textarea [(ngModel)]="newComment" placeholder="Écrivez ici votre commentaire" class="comment-input"
-                        rows="3">
-          </textarea>
-                    <button class="submit-button" (click)="addComment()" [disabled]="!newComment.trim()">
-                        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="m22 2-7 20-4-9-9-4 20-7z" />
-                        </svg>
-                    </button>
+                    <textarea [formControl]="commentForm" placeholder="Écrivez ici votre commentaire"
+                        class="comment-input" rows="3" maxlength="1000">
+                    </textarea>
+                    <div class="form-footer">
+                        <button class="submit-button" (click)="createComment()"
+                            [disabled]="!isFormValid || isSubmittingComment">
+                            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="m22 2-7 20-4-9-9-4 20-7z" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="loading-container" *ngIf="!article">
-        <div class="loading-spinner"></div>
-        <p>Chargement de l'article...</p>
-    </div>
+<div class="loading-container" *ngIf="!article">
+    <div class="loading-spinner"></div>
+    <p>Chargement de l'article...</p>
 </div>

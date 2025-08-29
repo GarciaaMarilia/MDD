@@ -38,14 +38,22 @@ export class ProfileComponent implements OnInit {
           .subscribe((subs) => {
             this.subscriptions = subs;
           });
-
         this.profileForm = this.fb.group({
           username: [
             this.user.username,
             [Validators.required, Validators.minLength(3)],
           ],
           email: [this.user.email, [Validators.required, Validators.email]],
-          password: ['', [Validators.required, Validators.minLength(6)]],
+          password: [
+            '',
+            [
+              Validators.required,
+              Validators.minLength(8),
+              Validators.pattern(
+                /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).+$/
+              ),
+            ],
+          ],
         });
       }
     });
@@ -59,6 +67,7 @@ export class ProfileComponent implements OnInit {
       };
       this.authService.update(profileData).subscribe({
         next: () => {
+          this.getCurrentUserAndInfos();
           alert('Profil mis à jour avec succès !');
         },
         error: (err) => {
