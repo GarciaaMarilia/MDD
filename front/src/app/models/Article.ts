@@ -15,12 +15,3 @@ export interface ArticleRequest {
   content: string;
   userId: number;
 }
-
-export interface ArticleResponse {
-  id: number;
-  topicId: number;
-  title: string;
-  content: string;
-  createdAt: string;
-  user: User;
-}

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { environment } from 'src/environments/environment';
-import { ArticleRequest, ArticleResponse } from 'src/app/models/Article';
+import { Article, ArticleRequest } from 'src/app/models/Article';
 
 @Injectable({
   providedIn: 'root',
@@ -13,19 +13,19 @@ export class ArticlesService {
 
   constructor(private http: HttpClient) {}
 
-  createItem(data: ArticleRequest): Observable<ArticleResponse> {
-    return this.http.post<ArticleResponse>(this.apiUrl, data);
+  createItem(data: ArticleRequest): Observable<Article> {
+    return this.http.post<Article>(this.apiUrl, data);
   }
 
-  getById(id: number): Observable<ArticleResponse> {
-    return this.http.get<ArticleResponse>(`${this.apiUrl}/${id}`);
+  getById(id: number): Observable<Article> {
+    return this.http.get<Article>(`${this.apiUrl}/${id}`);
   }
 
-  getAll(): Observable<ArticleResponse[]> {
-    return this.http.get<ArticleResponse[]>(this.apiUrl);
+  getAll(): Observable<Article[]> {
+    return this.http.get<Article[]>(this.apiUrl);
   }
 
-  getArticlesForUser(userId: number): Observable<ArticleResponse[]> {
-    return this.http.get<ArticleResponse[]>(`${this.apiUrl}/user/${userId}`);
+  getArticlesForUser(userId: number): Observable<Article[]> {
+    return this.http.get<Article[]>(`${this.apiUrl}/user/${userId}`);
   }
 }

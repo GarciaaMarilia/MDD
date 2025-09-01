@@ -1,10 +1,8 @@
 import {
+  AuthResponse,
   LoginRequest,
-  LoginResponse,
   RegisterRequest,
-  RegisterResponse,
   UpdateRequest,
-  UpdateResponse,
 } from 'src/app/models/Auth';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
@@ -30,26 +28,24 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  login(data: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, data).pipe(
+  login(data: LoginRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, data).pipe(
       tap((response) => {
         this.setToken(response.token, response.user);
       })
     );
   }
 
-  register(data: RegisterRequest): Observable<RegisterResponse> {
-    return this.http
-      .post<RegisterResponse>(`${this.apiUrl}/register`, data)
-      .pipe(
-        tap((response) => {
-          this.setToken(response.token, response.user);
-        })
-      );
+  register(data: RegisterRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, data).pipe(
+      tap((response) => {
+        this.setToken(response.token, response.user);
+      })
+    );
   }
 
-  update(data: UpdateRequest): Observable<UpdateResponse> {
-    return this.http.put<UpdateResponse>(`${this.apiUrl}/update`, data).pipe(
+  update(data: UpdateRequest): Observable<AuthResponse> {
+    return this.http.put<AuthResponse>(`${this.apiUrl}/update`, data).pipe(
       tap((response) => {
         this.setToken(response.token, response.user);
       })

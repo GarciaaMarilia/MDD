@@ -1,5 +1,4 @@
 import { User } from './User';
-import { ArticleResponse } from './Article';
 
 export interface CommentRequest {
   content: string;
