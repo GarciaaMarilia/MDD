@@ -18,6 +18,6 @@ public class RegisterRequest {
     private String username;
 
     @NotBlank
-    @Size(min = 6, max = 40)
+    @Size(min = 8, max = 40)
     private String password;
 }

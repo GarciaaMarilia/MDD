@@ -5,6 +5,7 @@ import { User } from 'src/app/models/User';
 import { Topic } from 'src/app/models/Topic';
 import { AuthService } from 'src/app/services/AuthService/auth.service';
 import { SubscriptionsService } from 'src/app/services/Subscriptions/subscriptions.service';
+import { filter, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -29,34 +30,45 @@ export class ProfileComponent implements OnInit {
   }
 
   getCurrentUserAndInfos() {
-    this.authService.userInfo$.subscribe((userInfo) => {
-      if (userInfo) {
-        this.user = userInfo;
+    this.authService.userInfo$
+      .pipe(
+        // filtra se não houver usuário
+        filter((userInfo): userInfo is User => !!userInfo),
+        // para cada usuário, busca as assinaturas
+        switchMap((user) => {
+          this.user = user;
 
-        this.subscriptionsService
-          .getUserSubscriptions(this.user.id)
-          .subscribe((subs) => {
-            this.subscriptions = subs;
-          });
-        this.profileForm = this.fb.group({
-          username: [
-            this.user.username,
-            [Validators.required, Validators.minLength(3)],
-          ],
-          email: [this.user.email, [Validators.required, Validators.email]],
-          password: [
-            '',
-            [
-              Validators.required,
-              Validators.minLength(8),
-              Validators.pattern(
-                /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).+$/
-              ),
+          // inicializa o formulário
+          this.profileForm = this.fb.group({
+            username: [
+              this.user.username,
+              [Validators.required, Validators.minLength(3)],
             ],
-          ],
-        });
-      }
-    });
+            email: [this.user.email, [Validators.required, Validators.email]],
+            password: [
+              '',
+              [
+                Validators.required,
+                Validators.minLength(8),
+                Validators.pattern(
+                  /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).+$/
+                ),
+              ],
+            ],
+          });
+
+          // retorna o observable das assinaturas
+          return this.subscriptionsService.getUserSubscriptions(this.user.id);
+        })
+      )
+      .subscribe({
+        next: (subs) => {
+          this.subscriptions = subs;
+        },
+        error: (err) => {
+          console.error('Erro ao buscar informações do usuário:', err);
+        },
+      });
   }
 
   onSaveProfile(): void {
@@ -67,7 +79,6 @@ export class ProfileComponent implements OnInit {
       };
       this.authService.update(profileData).subscribe({
         next: () => {
-          this.getCurrentUserAndInfos();
           alert('Profil mis à jour avec succès !');
         },
         error: (err) => {

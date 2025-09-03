@@ -23,7 +23,9 @@ export class AuthService {
   );
   public isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
-  private userInfoSubject = new BehaviorSubject<User | null>(null);
+  private userInfoSubject = new BehaviorSubject<User | null>(
+    this.getUserFromStorage()
+  );
   public userInfo$ = this.userInfoSubject.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -56,8 +58,7 @@ export class AuthService {
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(user));
     this.userInfoSubject.next(user);
-
-    this.updateAuthState();
+    this.isLoggedInSubject.next(true);
   }
 
   private updateAuthState(): void {
@@ -77,22 +78,26 @@ export class AuthService {
     return this.userInfoSubject.value;
   }
 
+  private getUserFromStorage(): User | null {
+    try {
+      const userStr = localStorage.getItem('user');
+      return userStr ? JSON.parse(userStr) : null;
+    } catch (error) {
+      return null;
+    }
+  }
+
   private hasValidToken(): boolean {
     const token = this.getToken();
-
-    if (!token) {
-      return false;
-    }
+    if (!token) return false;
 
     try {
       const payload = this.decodeJWT(token);
       const currentTime = Math.floor(Date.now() / 1000);
-
       if (payload.exp && payload.exp < currentTime) {
         this.clearAuth();
         return false;
       }
-
       return true;
     } catch (error) {
       this.clearAuth();

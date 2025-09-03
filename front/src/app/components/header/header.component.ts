@@ -14,6 +14,7 @@ export class HeaderComponent implements OnInit {
   isLoggedIn = false;
   userInfo: any = null;
   private authSubscription?: Subscription;
+  private userInfoSubscription?: Subscription;
 
   constructor(private router: Router, private authService: AuthService) {}
 
@@ -23,11 +24,25 @@ export class HeaderComponent implements OnInit {
         this.isLoggedIn = loggedIn;
       }
     );
+
+    this.userInfoSubscription = this.authService.userInfo$.subscribe(
+      (userInfo) => {
+        this.userInfo = userInfo;
+      }
+    );
+
+    if (this.authService.isLoggedIn()) {
+      this.userInfo = this.authService.getCurrentUserInfo();
+    }
   }
 
   ngOnDestroy(): void {
     if (this.authSubscription) {
       this.authSubscription.unsubscribe();
+    }
+
+    if (this.userInfoSubscription) {
+      this.userInfoSubscription.unsubscribe();
     }
   }
 
