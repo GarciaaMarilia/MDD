@@ -1,12 +1,13 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { User } from 'src/app/models/User';
+import { Topic } from 'src/app/models/Topic';
 import { ArticleRequest } from 'src/app/models/Article';
+import { TopicsService } from 'src/app/services/Topics/topics.service';
 import { AuthService } from 'src/app/services/AuthService/auth.service';
 import { ArticlesService } from 'src/app/services/Articles/articles.service';
-import { TopicsService } from 'src/app/services/Topics/topics.service';
-import { Topic } from 'src/app/models/Topic';
 
 @Component({
   selector: 'app-create-article',
@@ -21,6 +22,7 @@ export class CreateArticleComponent implements OnInit {
   topics: Topic[] = [];
 
   constructor(
+    private router: Router,
     private fb: FormBuilder,
     private authService: AuthService,
     private topicsService: TopicsService,
@@ -69,6 +71,7 @@ export class CreateArticleComponent implements OnInit {
         next: (response) => {
           alert('Article créé avec succès!');
           this.articleForm.reset();
+          this.navigateToArticles();
         },
         error: (err) => {
           console.error("Erreur lors de la création de l'article:", err);
@@ -78,6 +81,10 @@ export class CreateArticleComponent implements OnInit {
     } else {
       this.markFormGroupTouched();
     }
+  }
+
+  navigateToArticles() {
+    this.router.navigate(['/articles']);
   }
 
   onGoBack() {

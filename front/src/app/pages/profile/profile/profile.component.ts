@@ -1,3 +1,4 @@
+import { filter, switchMap } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -5,7 +6,6 @@ import { User } from 'src/app/models/User';
 import { Topic } from 'src/app/models/Topic';
 import { AuthService } from 'src/app/services/AuthService/auth.service';
 import { SubscriptionsService } from 'src/app/services/Subscriptions/subscriptions.service';
-import { filter, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -32,13 +32,10 @@ export class ProfileComponent implements OnInit {
   getCurrentUserAndInfos() {
     this.authService.userInfo$
       .pipe(
-        // filtra se não houver usuário
         filter((userInfo): userInfo is User => !!userInfo),
-        // para cada usuário, busca as assinaturas
         switchMap((user) => {
           this.user = user;
 
-          // inicializa o formulário
           this.profileForm = this.fb.group({
             username: [
               this.user.username,
@@ -57,7 +54,6 @@ export class ProfileComponent implements OnInit {
             ],
           });
 
-          // retorna o observable das assinaturas
           return this.subscriptionsService.getUserSubscriptions(this.user.id);
         })
       )
@@ -66,7 +62,10 @@ export class ProfileComponent implements OnInit {
           this.subscriptions = subs;
         },
         error: (err) => {
-          console.error('Erro ao buscar informações do usuário:', err);
+          console.error(
+            `Erreur lors de la récupération des informations de l'utilisateur:`,
+            err
+          );
         },
       });
   }
