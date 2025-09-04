@@ -6,7 +6,7 @@
 
         <div class="sort-container">
             <label>Trier par date</label>
-            <button disabled="articles.length === 0" class="sort-button" (click)="toggleSortOrder()">
+            <button [disabled]="articles.length === 0" class="sort-button" (click)="toggleSortOrder()">
                 <span *ngIf="sortAsc">&#9650;</span>
                 <span *ngIf="!sortAsc">&#9660;</span>
             </button>

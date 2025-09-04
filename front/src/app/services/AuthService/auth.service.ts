@@ -46,10 +46,13 @@ export class AuthService {
     );
   }
 
-  update(data: UpdateRequest): Observable<AuthResponse> {
-    return this.http.put<AuthResponse>(`${this.apiUrl}/update`, data).pipe(
+  update(data: UpdateRequest): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/update`, data).pipe(
       tap((response) => {
-        this.setToken(response.token, response.user);
+        const token = this.getToken();
+        if (token) {
+          this.setToken(token, response);
+        }
       })
     );
   }
