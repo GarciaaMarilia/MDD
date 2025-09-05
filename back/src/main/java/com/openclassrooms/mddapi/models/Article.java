@@ -27,7 +27,7 @@ public class Article {
 
     private String title;
 
-    @Column(columnDefinition = "TEXT") // to support longer content
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     private LocalDateTime createdAt;

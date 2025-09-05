@@ -54,5 +54,4 @@ public class UserService implements UserDetailsService {
         return repo.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
-
 }

@@ -28,7 +28,9 @@ describe('AuthService', () => {
     token: 'fake.jwt.token',
     user: mockUser,
   };
-
+  const updatedMockResponse: User = {
+    ...mockUser,
+  };
   beforeEach(() => {
     routerMock = { navigate: jest.fn() };
 
@@ -97,7 +99,7 @@ describe('AuthService', () => {
       password: 'newpassword123',
     };
     service.update(updateData).subscribe((res) => {
-      expect(res).toEqual(mockResponse);
+      expect(res).toEqual(updatedMockResponse);
       expect(service.isLoggedIn()).toBe(true);
       expect(service.getCurrentUserInfo()).toEqual(mockUser);
     });
